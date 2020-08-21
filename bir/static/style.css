@@ -262,11 +262,11 @@ body {
   height: 16px;
   background: var(--pages-color);
   outline: none;
+  overflow: hidden;
 }
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  appearance: none;
   width: 18px;
   height: 18px;
   background: var(--thumb-color);

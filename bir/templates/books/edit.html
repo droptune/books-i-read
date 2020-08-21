@@ -58,7 +58,7 @@
         Currently on <input class="pages" type="text" name="current-page" id="current-page" value="{{ book['current_page'] }}"> page out of
         <input class="pages" type="text" name="total-pages" id="total-pages" value="{{ book['total_pages'] }}">
       </li><li>
-          <input type="range" min="0" max="{{ book['total_pages'] }}" value="{{ book['current_page']}}" class="form" id="pageSlider">
+          <input type="range" min="0" max="{{ book['total_pages'] }}" value="{{ book['current_page']}}" class="slider" id="pageSlider">
       </li><li>
         <label for="completed">Finished</label>
         <input type="checkbox" id="finished" name="finished" value="finished" {% if book['finished'] == 'True' %} checked{% endif %}>
