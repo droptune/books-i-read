@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Books I Read{% endblock %}
+{% block header %}
+<div class="header">
+  {% if books|length > 0 %}
+  <div class="filters">
+    <input type="checkbox" id="current-books" name="current-books" value="current" checked>
+    <label for="current-books">current</label>
+    <input type="checkbox" id="completed-books" name="completed-books" value="completed" checked>
+    <label for="completed-books">completed</label>
+  </div>
+  {% endif %}
+  {% if g.user %}
+    <div class="header-right">
+      <a class="square-btn" href='{{ url_for('book.add_book') }}'>Add</a>
+    </div>
+  {% endif %}
+  <br>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="books">
+  {% for book in books %}
+    <article class="book">
+      <header>
+          <h2 class="book-title">
+            {% if book['finished'] == 'True' %}
+            <span class="finished-book">☑</span>
+            {% endif %}
+            {{ book['title'] }}
+          </h2><span class="rating-stars" data-emptyrating="{{ book_ratings[loop.index0]['rating-empty'] }}">{{ book_ratings[loop.index0]['rating-fill'] }}</span>
+          <div class="book-info">
+          by {{ book['author'] }} | {{ book['publisher_name'] }}, {{ book['year'] }}
+          </div>
+      </header>
+      <div class="cover-img">
+          {% if book['cover'] != '' %}
+            <img src={{ url_for('static', filename='covers/'+ book['cover']) }} alt="Book cover">
+          {% endif %}
+      </div>
+      <div>
+        <canvas class="progress" height="22px" id="{{ loop.index }}-progress" data-total="{{ book['total_pages'] }}" data-current="{{ book['current_page'] }}">
+        </canvas>
+      </div>
+      <div class="pages-label">
+      {{ book['current_page'] }} pages out of {{ book['total_pages'] }} read
+      </div>
+    <div class="category">Category: {{ book['category_name'] }}</div>
+    {% if g.user %}
+      <a class="edit-links" href="{{ url_for('book.edit_book', id=book['id']) }}">Edit</a>
+      <a class="edit-links" href="{{ url_for('book.delete_book', id=book['id']) }}">Delete</a>
+    {% endif %}
+    </article>
+  {% endfor %}
+</div>
+<script src="{{ url_for('static', filename='index.js') }}"/>
+{% endblock %}

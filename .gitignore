@@ -1,0 +1,5 @@
+venv
+instance/
+bir/static/covers/
+__pycache__
+*.pyc

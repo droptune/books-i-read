@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Books I Read - Edit Book{% endblock %}
+{% block header %}
+<div class="header">
+<div class="header-right">
+  <a class="square-btn" href='{{ url_for('index') }}'>Cancel</a>
+</div></div>
+{% endblock %}
+
+{% block content %}
+<div>
+  <form method="post" enctype="multipart/form-data">
+    <ul class=add-form>
+      <li> <h1>Edit Book</h1></li>
+      <li>
+        {% if book['cover'] != '' %}
+        <div class="cover-img">
+          <img src={{ url_for('static', filename='covers/'+ book['cover']) }} alt="Book cover">
+        </div>
+        {% else %}
+        Upload cover: <input type="file" name="cover-file">
+        {% endif %}
+      </li><li>
+        <input class="add-form-input" type="text" name="title" id="title" value="{{ book['title'] }}" required>
+      </li><li>
+        <input class="add-form-input" type="text" name="author" id="author" value="{{ book['author'] }}">
+      </li><li>
+        <input class="add-form-input" id="publisher-select" type="text" name="publisher" value="{{ book['publisher_name'] }}">
+      </li><li>
+        <input class="add-form-input" type="text" name="year" id="year" value="{{ book['year'] }}">
+      </li><li class="rating">
+        {% for i in range(5) %}
+          {% if loop.index < book['rating'] %}
+            <input type="radio" id="rating-{{ loop.index }}" name="rating" value="{{ loop.index }}">
+            <label class="rating-selected" id="rating-label-{{ loop.index }}" for="rating-{{ loop.index }}">★</label>
+          {% elif book['rating'] == loop.index %}
+            <input type="radio" id="rating-{{ loop.index }}" name="rating" value="{{ loop.index }}" checked>
+            <label class="rating-selected" id="rating-label-{{ loop.index }}" for="rating-{{ loop.index }}">★</label>
+          {% else %}
+              <input type="radio" id="rating-{{ loop.index }}" name="rating" value="{{ loop.index }}">
+            <label class="rating-label" id="rating-label-{{ loop.index }}" for="rating-{{ loop.index }}">★</label>
+            {% endif %}
+        {% endfor %}
+      </li><li>
+        <label for="category">Category</label>
+        <select name="category" id="category">
+          {% for category in categories %}
+          <option value="{{ category['category_name'] }}">{{ category['category_name'] }}</option>
+          {% endfor %}
+        </select>
+      </li><li>
+        Currently on <input class="pages" type="text" name="current-page" id="current-page" value="{{ book['current_page'] }}"> page out of
+        <input class="pages" type="text" name="total-pages" id="total-pages" value="{{ book['total_pages'] }}">
+      </li><li>
+          <input type="range" min="0" max="{{ book['total_pages'] }}" value="{{ book['current_page']}}" class="form" id="pageSlider">
+      </li><li>
+        <label for="completed">Finished</label>
+        <input type="checkbox" id="finished" name="finished" value="finished" {% if book['finished'] == 'True' %} checked{% endif %}>
+      </li><li>
+        <button class="square-btn" type="submit" value="Edit">Edit</button>
+      </li>
+    </ul>
+  <form>
+</div>
+<script src="{{ url_for('static', filename='form.js') }}"></script>
+{% endblock %}

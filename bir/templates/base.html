@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+  <div class="title"><a href="{{ url_for('index') }}">Books I Read</a></div>
+  {% if g.user %}
+    <div class="login-control">
+      <div>{{ g.user['username'] }}</div>
+      <div><a href="{{ url_for('auth.logout') }}">Log Out</a></div>
+    </div>
+  {% else %}
+    <script>
+    openForm = () => {
+      document.getElementById("loginForm").style.display = "block";
+    }
+
+    closeForm = () => {
+      document.getElementById("loginForm").style.display = "none";
+    }
+    </script>
+    <div class="login-control"><button type="submit" onclick="openForm()">Log In</button></div>
+  {% endif %}
+</ul>
+{% if not g.user %}
+<div class="login-form" id="loginForm">
+  <form action="{{ url_for('auth.login') }}" class="login-container" method="post">
+    <h1>Login</h1>
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" placeholder="Username" required>
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" placeholder="Password" required>
+    <input class="square-btn" type="submit" value="Log In">
+    <button class="square-btn" type="submit" class="login-cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+{% endif %}
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+  <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</body>
+</html>
