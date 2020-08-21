@@ -18,15 +18,13 @@
         <input class="add-form-input" type="text" name="title" id="title" placeholder="Title" required>
       </li><li>
         <input class="add-form-input" type="text" name="author" id="author" placeholder="Author">
-      </li><li class="autocomplete">
-        <script>
-          var publishers = [
-            {% for publisher in publishers %}
-            "{{ publisher['publisher_name'] }}",
-            {% endfor %}
-          ];
-        </script>
-        <input class="add-form-input" id="publisher-select" type="text" name="publisher" placeholder="Publisher">
+      </li><li>
+        <input class="add-form-input" list="publishers" id="publisher-select" name="publisher" placeholder="Publisher"/>
+        <datalist id="publishers">
+          {% for publisher in publishers %}
+            <option value="{{ publisher['publisher_name'] }}">
+          {% endfor %}
+        </datalist>
       </li><li>
         <input class="add-form-input" type="text" name="year" id="year" placeholder="Book Year">
       </li><li class="rating">

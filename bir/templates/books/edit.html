@@ -26,7 +26,12 @@
       </li><li>
         <input class="add-form-input" type="text" name="author" id="author" value="{{ book['author'] }}">
       </li><li>
-        <input class="add-form-input" id="publisher-select" type="text" name="publisher" value="{{ book['publisher_name'] }}">
+        <input class="add-form-input" list="publishers" id="publisher-select" name="publisher" value="{{ book['publisher_name'] }}"/>
+        <datalist id="publishers">
+          {% for publisher in publishers %}
+            <option value="{{ publisher['publisher_name'] }}">
+          {% endfor %}
+        </datalist>
       </li><li>
         <input class="add-form-input" type="text" name="year" id="year" value="{{ book['year'] }}">
       </li><li class="rating">
