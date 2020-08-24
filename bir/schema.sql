@@ -14,15 +14,15 @@ CREATE TABLE book (
     author_id INTEGER,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title TEXT NOT NULL,
+    author TEXT,
     cover TEXT,
-    publisher INTEGER NOT NULL,
-    category INTEGER NOT NULL,
+    publisher INTEGER,
+    category INTEGER,
     review TEXT,
     rating INTEGER,
-    current_page INTEGER NOT NULL,
-    total_pages INTEGER NOT NULL,
+    current_page INTEGER NOT NULL DEFAULT 0,
+    total_pages INTEGER NOT NULL DEFAULT 0,
     year INTEGER,
-    author TEXT,
     finished TEXT,
     FOREIGN KEY (author_id) REFERENCES user (id),
     FOREIGN KEY (publisher) REFERENCES publisher (id),
@@ -31,19 +31,13 @@ CREATE TABLE book (
 
 CREATE TABLE publisher (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    publisher_name TEXT UNIQUE NOT NULL
+    publisher_name TEXT UNIQUE
 );
 
 CREATE TABLE category (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     category_name TEXT UNIQUE NOT NULL
 );
-
-INSERT INTO publisher (publisher_name)
-VALUES
-    ("O'Reilly"),
-    ("Wiley"),
-    ("Packt");
 
 INSERT INTO category (category_name)
 VALUES

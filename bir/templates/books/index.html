@@ -32,14 +32,19 @@
             {{ book['title'] }}
           </h2><span class="rating-stars" data-emptyrating="{{ book_ratings[loop.index0]['rating-empty'] }}">{{ book_ratings[loop.index0]['rating-fill'] }}</span>
           <div class="book-info">
-          by {{ book['author'] }} | {{ book['publisher_name'] }}, {{ book['year'] }}
+          {% if book['author'] != '' %}
+          by {{ book['author'] }} | 
+          {% endif %}
+          {% if book['publisher_name'] != None %}
+          {{ book['publisher_name'] }} 
+          {% endif %}{{ book['year'] }}
           </div>
       </header>
-      <div class="cover-img">
-          {% if book['cover'] != '' %}
-            <img src={{ url_for('static', filename='covers/'+ book['cover']) }} alt="Book cover">
-          {% endif %}
-      </div>
+      {% if book['cover'] != '' %}
+        <div class="cover-img">
+          <img src={{ url_for('static', filename='covers/'+ book['cover']) }} alt="Book cover">
+        </div>
+      {% endif %}
       <div>
         <canvas class="progress" height="22px" id="{{ loop.index }}-progress" data-total="{{ book['total_pages'] }}" data-current="{{ book['current_page'] }}">
         </canvas>
@@ -47,7 +52,9 @@
       <div class="pages-label">
       {{ book['current_page'] }} pages out of {{ book['total_pages'] }} read
       </div>
-    <div class="category">Category: {{ book['category_name'] }}</div>
+    {% if book['category_name'] != None %}
+      <div class="category">Category: {{ book['category_name'] }}</div>
+    {% endif %}
     {% if g.user %}
       <a class="edit-links" href="{{ url_for('book.edit_book', id=book['id']) }}">Edit</a>
       <a class="edit-links" href="{{ url_for('book.delete_book', id=book['id']) }}">Delete</a>

@@ -17,13 +17,31 @@ def allowed_filename(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_COVER_EXTENSIONS
 
 
+def get_item_id(db, item, table):
+    if item == '':
+        return None
+
+    item_id = db.execute('SELECT id FROM {0} WHERE {0}_name = ?'.format(table), (item,)).fetchone()
+
+    if item_id is None:
+        tmp = db.execute(
+            'INSERT INTO {0} ({0}_name) VALUES(?)'.format(table),
+            (item,)
+        )
+        db.commit()
+        item_id = db.execute('SELECT id FROM {0} WHERE {0}_name = ?'.format(table),
+                             (item,)).fetchone()
+
+    return item_id['id']
+
+
 def get_book(id):
     db = get_db()
 
     book = db.execute('SELECT b.id, title, author, publisher_name, year, rating, category_name,'
                       ' current_page, total_pages, finished, cover FROM book b'
-                      ' JOIN category c ON b.category = c.id'
-                      ' JOIN publisher p ON b.publisher = p.id'
+                      ' LEFT JOIN category c ON b.category = c.id'
+                      ' LEFT JOIN publisher p ON b.publisher = p.id'
                       ' WHERE b.id = ?', (id,)).fetchone()
 
     return book
@@ -34,8 +52,8 @@ def index():
     db = get_db()
     books = db.execute(
         'SELECT b.id, title, rating, author, publisher_name, year, review, category_name, current_page, total_pages, finished, cover'
-        ' FROM book b JOIN publisher p ON b.publisher = p.id'
-        ' JOIN category c ON b.category = c.id'
+        ' FROM book b LEFT JOIN publisher p ON b.publisher = p.id'
+        ' LEFT JOIN category c ON b.category = c.id'
         ' ORDER by created DESC'
     ).fetchall()
 
@@ -70,7 +88,6 @@ def add_book():
         if 'cover-file' not in request.files:
             cover = ''
         else:
-            print("File found")
             cover_file = request.files['cover-file']
             if cover_file.filename != '' and allowed_filename(cover_file.filename):
                 file_extension = cover_file.filename.rsplit('.', 1)[-1]
@@ -88,17 +105,8 @@ def add_book():
             elif cover_file.filename != '':
                 flash("Allowed image types are: png, jpg, jpeg and gif")
 
-        publisher_id = db.execute('SELECT id FROM publisher WHERE publisher_name = ?', (publisher,)).fetchone()
-        category_id = db.execute('SELECT id FROM category WHERE category_name = ?', (category,)).fetchone()
-
-        if publisher_id is None:
-            db.execute(
-                'INSERT INTO publisher (publisher_name)'
-                ' VALUES (?)',
-                (publisher,)
-            )
-            db.commit()
-            publisher_id = db.execute('SELECT id FROM publisher WHERE publisher_name = ?', (publisher,)).fetchone()
+        publisher_id = get_item_id(db, publisher, 'publisher')
+        category_id = get_item_id(db, category, 'category')
 
         error = None
 
@@ -108,7 +116,7 @@ def add_book():
             db.execute(
                 'INSERT INTO book (title, author, publisher, year, rating, category, current_page, total_pages, cover)'
                 ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                (title, author, publisher_id['id'], year, rating, category_id['id'], current_page, total_pages, cover)
+                (title, author, publisher_id, year, rating, category_id, current_page, total_pages, cover)
             )
             db.commit()
             return redirect(url_for('index'))
@@ -163,17 +171,8 @@ def edit_book(id):
             elif cover_file.filename != '':
                 flash("Allowed image types are: png, jpg, jpeg and gif")
 
-        publisher_id = db.execute('SELECT id FROM publisher WHERE publisher_name = ?', (publisher,)).fetchone()
-        category_id = db.execute('SELECT id FROM category WHERE category_name = ?', (category,)).fetchone()
-
-        if publisher_id is None:
-            db.execute(
-                'INSERT INTO publisher (publisher_name)'
-                ' VALUES (?)',
-                (publisher,)
-            )
-            db.commit()
-            publisher_id = db.execute('SELECT id FROM publisher WHERE publisher_name = ?', (publisher,)).fetchone()
+        publisher_id = get_item_id(db, publisher, 'publisher')
+        category_id = get_item_id(db, category, 'category')
 
         error = None
 
@@ -184,7 +183,7 @@ def edit_book(id):
                 'UPDATE book SET title = ?, author = ?, publisher = ?, year = ?,'
                 ' rating = ?, category = ?, current_page = ?, total_pages = ?,'
                 ' finished = ? WHERE id = ?',
-                (title, author, publisher_id['id'], year, rating, category_id['id'], current_page, total_pages, finished, id)
+                (title, author, publisher_id, year, rating, category_id, current_page, total_pages, finished, id)
             )
             db.commit()
             return redirect(url_for('index'))

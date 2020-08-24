@@ -10,7 +10,7 @@
 
 {% block content %}
 <div>
-  <form method="post" enctype="multipart/form-data">
+  <form autocomplete="off" method="post" enctype="multipart/form-data">
     <ul class=add-form>
       <li> <h1>Edit Book</h1></li>
       <li>
@@ -24,17 +24,20 @@
       </li><li>
         <input class="add-form-input" type="text" name="title" id="title" value="{{ book['title'] }}" required>
       </li><li>
-        <input class="add-form-input" type="text" name="author" id="author" value="{{ book['author'] }}">
+        <input class="add-form-input" type="text" name="author" id="author" placeholder="Author" value="{{ book['author'] }}">
       </li><li>
-        <input class="add-form-input" list="publishers" id="publisher-select" name="publisher" value="{{ book['publisher_name'] }}"/>
+        <input class="add-form-input" list="publishers" id="publisher-select" name="publisher" placeholder="Publisher" value="{% if book['publisher_name'] != None %}{{ book['publisher_name'] }}{% else %}{% endif %}"/>
         <datalist id="publishers">
           {% for publisher in publishers %}
             <option value="{{ publisher['publisher_name'] }}">
           {% endfor %}
         </datalist>
       </li><li>
-        <input class="add-form-input" type="text" name="year" id="year" value="{{ book['year'] }}">
+        <input class="add-form-input" type="text" name="year" id="year" placeholder="Year" value="{{ book['year'] }}">
       </li><li class="rating">
+        {% if book['rating'] == 0 %}
+        <input type="radio" id="rating-0" name="rating" value="0" checked>
+        {% endif %}
         {% for i in range(5) %}
           {% if loop.index < book['rating'] %}
             <input type="radio" id="rating-{{ loop.index }}" name="rating" value="{{ loop.index }}">
@@ -48,12 +51,12 @@
             {% endif %}
         {% endfor %}
       </li><li>
-        <label for="category">Category</label>
-        <select name="category" id="category">
+        <input class="add-form-input" list="categories" id="category-select" name="category" placeholder="Category" value="{% if book['category_name'] != None %}{{ book['category_name'] }}{% else %}{% endif %}"/>
+        <datalist id="categories">
           {% for category in categories %}
-          <option value="{{ category['category_name'] }}">{{ category['category_name'] }}</option>
+            <option value="{{ category['category_name'] }}">
           {% endfor %}
-        </select>
+        </datalist>
       </li><li>
         Currently on <input class="pages" type="text" name="current-page" id="current-page" value="{{ book['current_page'] }}"> page out of
         <input class="pages" type="text" name="total-pages" id="total-pages" value="{{ book['total_pages'] }}">
