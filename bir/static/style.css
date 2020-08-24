@@ -249,10 +249,13 @@ body {
 
 .books {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .book {
   flex: 1;
+  margin: 14px;
 }
 
 .slider {
