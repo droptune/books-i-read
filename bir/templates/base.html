@@ -25,7 +25,6 @@
     </script>
     <div class="login-control"><button type="submit" onclick="openForm()">Log In</button></div>
   {% endif %}
-</ul>
 {% if not g.user %}
 <div class="login-form" id="loginForm">
   <form action="{{ url_for('auth.login') }}" class="login-container" method="post">
@@ -48,5 +47,7 @@
   <div class="flash">{{ message }}</div>
   {% endfor %}
   {% block content %}{% endblock %}
+</section>
+{% block scripts %}{% endblock %}
 </body>
 </html>

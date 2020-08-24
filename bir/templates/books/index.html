@@ -27,16 +27,16 @@
       <header>
           <h2 class="book-title">
             {% if book['finished'] == 'True' %}
-            <span class="finished-book">☑</span>
+              <span class="finished-book">☑</span>
             {% endif %}
             {{ book['title'] }}
           </h2><span class="rating-stars" data-emptyrating="{{ book_ratings[loop.index0]['rating-empty'] }}">{{ book_ratings[loop.index0]['rating-fill'] }}</span>
           <div class="book-info">
           {% if book['author'] != '' %}
-          by {{ book['author'] }} | 
+            by {{ book['author'] }} | 
           {% endif %}
           {% if book['publisher_name'] != None %}
-          {{ book['publisher_name'] }} 
+            {{ book['publisher_name'] }} 
           {% endif %}{{ book['year'] }}
           </div>
       </header>
@@ -46,7 +46,7 @@
         </div>
       {% endif %}
       <div>
-        <canvas class="progress" height="22px" id="{{ loop.index }}-progress" data-total="{{ book['total_pages'] }}" data-current="{{ book['current_page'] }}">
+        <canvas class="progress" height="22px" data-total="{{ book['total_pages'] }}" data-current="{{ book['current_page'] }}">
         </canvas>
       </div>
       <div class="pages-label">
@@ -62,5 +62,7 @@
     </article>
   {% endfor %}
 </div>
-<script src="{{ url_for('static', filename='index.js') }}"/>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
