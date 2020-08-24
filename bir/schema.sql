@@ -38,8 +38,3 @@ CREATE TABLE category (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     category_name TEXT UNIQUE NOT NULL
 );
-
-INSERT INTO category (category_name)
-VALUES
-    ('IT'),
-    ('Business');
