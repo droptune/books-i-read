@@ -1,7 +1,6 @@
 // Draw progress bars
-console.log("LOG");
 window.onload = () => {
-  console.log("WORKING");
+  document.getElementById("pages-label").style.display = "none";
   const canvases = document.getElementsByClassName("progress");
   for (let i = 0; i < canvases.length; i++) {
     console.log("Drawing...");
