@@ -48,7 +48,7 @@ body {
 .title a,
 .title a:link,
 .title a:visited {
-  font-size: 24px;
+  font-size: 1.5em;
   margin: 0 20px 0 20px;
   text-decoration: none;
   color: var(--fg-color);
@@ -59,7 +59,7 @@ body {
 }
 
 .login-control button, .login-control a {
-  font-size: 20px;
+  font-size: 1.25em;
   font-family: "Noto Sans", sans-serif;
   background-color: var(--light-bg-color);
   border: none;
@@ -70,7 +70,7 @@ body {
 .login-control a {
   text-decoration: none;
   color: var(--fg-color);
-  font-size: 20px;
+  font-size: 1.25em;
 }
 
 .login-control a:hover {
@@ -185,7 +185,7 @@ body {
   font-family: "Noto Sans", sans-serif;
   display: inline;
   color: var(--rating-star);
-  font-size: 36px;
+  font-size: 2em;
 }
 
 .rating-stars::after {
@@ -202,7 +202,7 @@ body {
 
 .category {
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: 0.875em;
 }
 
 .add-form {
@@ -313,7 +313,7 @@ body {
 }
 
 .rating-selected {
-  font-size: 30px;
+  font-size: 1.875em;
   transition: all .2s ease;
   color: var(--rating-star);
   cursor: pointer;
@@ -321,7 +321,7 @@ body {
 
 
 .rating-label {
-  font-size: 30px;
+  font-size: 1.875em;
   cursor: pointer;
   transition: all .2s ease;
   color: var(--rating-empty);
