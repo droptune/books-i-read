@@ -15,15 +15,16 @@
     </div>
   {% else %}
     <script>
-    openForm = () => {
-      document.getElementById("loginForm").style.display = "block";
-    }
-
-    closeForm = () => {
-      document.getElementById("loginForm").style.display = "none";
+    toggleForm = () => {
+      const loginForm = document.getElementById("loginForm");
+      if ( loginForm.style.display == "block") {
+        loginForm.style.display = "none";
+      } else {
+        loginForm.style.display = "block";
+      }
     }
     </script>
-    <div class="login-control"><button type="submit" onclick="openForm()">Log In</button></div>
+    <div class="login-control"><button type="submit" onclick="toggleForm()">Log In</button></div>
   {% endif %}
 {% if not g.user %}
 <div class="login-form" id="loginForm">
@@ -34,7 +35,7 @@
     <label for="password">Password</label>
     <input id="password" type="password" name="password" placeholder="Password" required>
     <input class="square-btn" type="submit" value="Log In">
-    <button class="square-btn" type="submit" class="login-cancel" onclick="closeForm()">Close</button>
+    <button class="square-btn" type="submit" class="login-cancel" onclick="toggleForm()">Close</button>
   </form>
 </div>
 {% endif %}
