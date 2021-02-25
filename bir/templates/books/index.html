@@ -46,12 +46,19 @@
         </div>
       {% endif %}
       <div>
+        {% if book['finished'] == 'False' %}
         <canvas class="progress" height="22px" data-total="{{ book['total_pages'] }}" data-current="{{ book['current_page'] }}">
+        {% endif %}
         </canvas>
       </div>
       <div class="pages-label" id="pages-label">
       {{ book['current_page'] }} pages out of {{ book['total_pages'] }} read
       </div>
+      {% if book['review'] is not none %}
+      <div class="book-review">
+        {{ book['review'] }}
+      </div>
+      {% endif %}
     {% if book['category_name'] != None %}
       <div class="category">Category: {{ book['category_name'] }}</div>
     {% endif %}

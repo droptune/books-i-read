@@ -39,7 +39,7 @@ def get_book(id):
     db = get_db()
 
     book = db.execute('SELECT b.id, title, author, publisher_name, year, rating, category_name,'
-                      ' current_page, total_pages, finished, cover FROM book b'
+                      ' current_page, total_pages, finished, review, cover FROM book b'
                       ' LEFT JOIN category c ON b.category = c.id'
                       ' LEFT JOIN publisher p ON b.publisher = p.id'
                       ' WHERE b.id = ?', (id,)).fetchone()
@@ -83,6 +83,11 @@ def add_book():
         category = request.form['category']
         current_page = request.form['current-page']
         total_pages = request.form['total-pages']
+        review = request.form['review']
+        if (request.form.get('finished') != None):
+            finished = 'True'
+        else:
+            finished = 'False'
         cover = ''
 
         if 'cover-file' not in request.files:
@@ -114,9 +119,9 @@ def add_book():
             flash(error)
         else:
             db.execute(
-                'INSERT INTO book (title, author, publisher, year, rating, category, current_page, total_pages, cover)'
-                ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                (title, author, publisher_id, year, rating, category_id, current_page, total_pages, cover)
+                'INSERT INTO book (title, author, publisher, year, rating, category, current_page, total_pages, cover, finished, review)'
+                ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                (title, author, publisher_id, year, rating, category_id, current_page, total_pages, cover, finished, review)
             )
             db.commit()
             return redirect(url_for('index'))
@@ -144,6 +149,7 @@ def edit_book(id):
         category = request.form['category']
         current_page = request.form['current-page']
         total_pages = request.form['total-pages']
+        review = request.form['review']
         if (request.form.get('finished') != None):
             finished = 'True'
         else:
@@ -182,8 +188,8 @@ def edit_book(id):
             db.execute(
                 'UPDATE book SET title = ?, author = ?, publisher = ?, year = ?,'
                 ' rating = ?, category = ?, current_page = ?, total_pages = ?,'
-                ' finished = ? WHERE id = ?',
-                (title, author, publisher_id, year, rating, category_id, current_page, total_pages, finished, id)
+                ' finished = ?, review = ? WHERE id = ?',
+                (title, author, publisher_id, year, rating, category_id, current_page, total_pages, finished, review, id)
             )
             db.commit()
             return redirect(url_for('index'))
