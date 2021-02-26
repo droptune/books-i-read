@@ -49,13 +49,40 @@ def get_book(id):
 
 @bp.route('/')
 def index():
+    finished_filter = request.args.get('filter')
+    view_filters = {'current': 'checked', 'finished': 'checked'}
     db = get_db()
-    books = db.execute(
-        'SELECT b.id, title, rating, author, publisher_name, year, review, category_name, current_page, total_pages, finished, cover'
-        ' FROM book b LEFT JOIN publisher p ON b.publisher = p.id'
-        ' LEFT JOIN category c ON b.category = c.id'
-        ' ORDER by created DESC'
-    ).fetchall()
+    if finished_filter == 'finished':
+        view_filters = {'current': '', 'finished': 'checked'}
+        books = db.execute(
+            'SELECT b.id, title, rating, author, publisher_name, year, review, category_name, current_page, total_pages, finished, cover'
+            ' FROM book b LEFT JOIN publisher p ON b.publisher = p.id'
+            ' LEFT JOIN category c ON b.category = c.id'
+            ' WHERE b.finished = "True"'
+            ' ORDER by created DESC'
+        ).fetchall()
+    elif finished_filter == 'current':
+        view_filters = {'current': 'checked', 'finished': ''}
+        books = db.execute(
+            'SELECT b.id, title, rating, author, publisher_name, year, review, category_name, current_page, total_pages, finished, cover'
+            ' FROM book b LEFT JOIN publisher p ON b.publisher = p.id'
+            ' LEFT JOIN category c ON b.category = c.id'
+            ' WHERE b.finished = "False"'
+            ' ORDER by created DESC'
+        ).fetchall()
+    elif finished_filter == 'none':
+        view_filters = {'current': '', 'finished': ''}
+        books = []
+    else:
+        view_filters = {'current': 'checked', 'finished': 'checked'}
+        finished_filter = 'all'
+        books = db.execute(
+            'SELECT b.id, title, rating, author, publisher_name, year, review, category_name, current_page, total_pages, finished, cover'
+            ' FROM book b LEFT JOIN publisher p ON b.publisher = p.id'
+            ' LEFT JOIN category c ON b.category = c.id'
+            ' ORDER by created DESC'
+        ).fetchall()
+
 
     book_ratings = []
     for book in books:
@@ -66,7 +93,7 @@ def index():
 
         book_ratings.append(rating)
 
-    return render_template('books/index.html', books=books, book_ratings=book_ratings)
+    return render_template('books/index.html', books=books, book_ratings=book_ratings, view_filters=view_filters)
 
 
 @bp.route('/add', methods=('GET', 'POST'))

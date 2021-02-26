@@ -1,9 +1,32 @@
-// Draw progress bars
+function setFilter(filterCurrent, filterFinished) {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  if (filterCurrent.checked && filterFinished.checked && urlParams.has('filter')) {
+    window.location.href = '/';
+  } else if (filterCurrent.checked && !filterFinished.checked && urlParams.get('filter') != 'current') {
+    window.location.href = '/?filter=current';
+  } else if (!filterCurrent.checked && filterFinished.checked && urlParams.get('filter') != 'finished') {
+    window.location.href = '/?filter=finished';
+  } else if (!filterCurrent.checked && !filterFinished.checked && urlParams.get('filter') != 'none') {
+    window.location.href = '/?filter=none';
+  }
+}
+
 window.onload = () => {
-  document.getElementById("pages-label").style.display = "none";
+  // Handle checkboxes
+  const filterCurrent = document.getElementById("current-books");
+  const filterFinished = document.getElementById("completed-books");
+
+  filterCurrent.onchange = () => setFilter(filterCurrent, filterFinished);
+  filterFinished.onchange = () => setFilter(filterCurrent, filterFinished);
+
+  // Draw progress bars
+  const pagesLabel = document.getElementById("pages-label");
+  if (pagesLabel) {
+    pagesLabel.style.display = "none";
+  }
   const canvases = document.getElementsByClassName("progress");
   for (let i = 0; i < canvases.length; i++) {
-    console.log("Drawing...");
     const canvas = canvases[i];
     const ctx = canvas.getContext('2d');
 
@@ -30,3 +53,4 @@ window.onload = () => {
     ctx.restore();
   }
 };
+

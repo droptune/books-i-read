@@ -3,12 +3,16 @@
 {% block title %}Books I Read{% endblock %}
 {% block header %}
 <div class="header">
-  {% if books|length > 0 %}
+  {% if books|length > 0 or (view_filters['finished'] == '' and view_filters['current'] == '') %}
   <div class="filters">
-    <input type="checkbox" id="current-books" name="current-books" value="current" checked>
-    <label for="current-books">current</label>
-    <input type="checkbox" id="completed-books" name="completed-books" value="completed" checked>
-    <label for="completed-books">completed</label>
+    <label class="filter">current
+      <input type="checkbox" id="current-books" name="current-books" {{ view_filters['current'] }}>
+    <span class="check"></span>
+    </label>
+    <label class="filter">completed
+      <input type="checkbox" id="completed-books" name="completed-books" {{ view_filters['finished'] }}>
+    <span class="check"></span>
+    </label>
   </div>
   {% endif %}
   {% if g.user %}
