@@ -66,7 +66,7 @@
         <label for="completed">Finished</label>
         <input type="checkbox" id="finished" name="finished" value="finished" {% if book['finished'] == 'True' %} checked{% endif %}>
       </li><li>
-        <input class="add-form-input" type="textarea" name="review" id="review" placeholder="Review" value="{{ book['review'] }}">
+        <textarea class="add-form-input autoheight" name="review" id="review" placeholder="Review"> {{ book['review'] }}</textarea>
       </li><li>
         <button class="square-btn" type="submit" value="Edit">Edit</button>
       </li>

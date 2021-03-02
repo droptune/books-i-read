@@ -10,7 +10,7 @@ currentPage.oninput = function() { slider.value = this.value; }
 totalPages.oninput = function() { slider.max = this.value; }
 
 /* rating colors */
-ratings = [
+const ratings = [
   document.getElementById('rating-1'),
   document.getElementById('rating-2'),
   document.getElementById('rating-3'),
@@ -18,7 +18,7 @@ ratings = [
   document.getElementById('rating-5'),
 ];
 
-ratingLabels = [
+const ratingLabels = [
   document.getElementById('rating-label-1'),
   document.getElementById('rating-label-2'),
   document.getElementById('rating-label-3'),
@@ -40,3 +40,12 @@ ratings.forEach((radioButton) => {
     });
   });
 });
+
+// Review sizing
+const review = document.getElementById("review");
+review.addEventListener('input', autoResize, false);
+
+function autoResize() {
+  this.style.height = 'auto';
+  this.style.height = this.scrollHeight + 'px';
+}

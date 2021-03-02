@@ -257,6 +257,11 @@ body {
   width: 100%;
 }
 
+.add-form-input .autoheight {
+  overflow: hidden;
+  resize: none;
+}
+
 .add-form select {
   border: none;
   border-radius: 0px;
