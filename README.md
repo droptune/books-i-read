@@ -37,7 +37,7 @@ flask add-user username password
 3. Create `bir.ini` in app directory:
 
     ```
-    module = bir:app
+    module = bir:create_app()
     master = true
     processes = 4
     socket = /var/run/books-i-read/bir.sock
